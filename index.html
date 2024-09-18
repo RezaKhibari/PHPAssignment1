@@ -3,22 +3,68 @@
 <head>
     <title>Product Discount Calculator</title>
     <link rel="stylesheet" href="main.css">
+    <script>
+        function validateForm() {
+            // Get form values
+            var description = document.forms["discountForm"]["product_description"].value.trim();
+            var listPrice = parseFloat(document.forms["discountForm"]["list_price"].value);
+            var discountPercent = parseFloat(document.forms["discountForm"]["discount_percent"].value);
+
+            // Check if the description is empty
+            if (description === "") {
+                alert("Product Description must be filled out");
+                return false;
+            }
+
+            // Check if list price is a valid number greater than 0
+            if (isNaN(listPrice) || listPrice <= 0) {
+                alert("List Price must be a number greater than 0");
+                return false;
+            }
+
+            // Check if discount percent is a valid number between 0 and 100
+            if (isNaN(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+                alert("Discount Percent must be a number between 0 and 100");
+                return false;
+            }
+
+            // Perform the calculation
+            var discountAmount = listPrice * (discountPercent / 100);
+            var finalPrice = listPrice - discountAmount;
+
+            // Display the results below the form
+            document.getElementById("result").innerHTML = 
+                "<h2>Calculation Results</h2>" +
+                "<p>Product Description: " + description + "</p>" +
+                "<p>List Price: $" + listPrice.toFixed(2) + "</p>" +
+                "<p>Discount Percent: " + discountPercent.toFixed(2) + "%</p>" +
+                "<p>Discount Amount: $" + discountAmount.toFixed(2) + "</p>" +
+                "<p>Final Price: $" + finalPrice.toFixed(2) + "</p>";
+
+            // Clear the form fields
+            document.forms["discountForm"]["product_description"].value = "";
+            document.forms["discountForm"]["list_price"].value = "";
+            document.forms["discountForm"]["discount_percent"].value = "";
+
+            return false; // Prevent the form from submitting
+        }
+    </script>
 </head>
 
 <body>
     <main>
         <h1>Product Discount Calculator</h1>
-        <form action="display_discount.php" method="post">
+        <form name="discountForm" onsubmit="return validateForm();">
 
             <div id="data">
                 <label>Product Description:</label>
-                <input type="text" name="product_description"><br>
+                <input type="text" name="product_description" required><br>
 
                 <label>List Price:</label>
-                <input type="text" name="list_price"><br>
+                <input type="number" name="list_price" step="0.01" min="0.01" required title="Please enter a valid price."><br>
 
                 <label>Discount Percent:</label>
-                <input type="text" name="discount_percent"><span>%</span><br>
+                <input type="number" name="discount_percent" step="0.01" min="0" max="100" required title="Please enter a valid percent (0-100)."><span>%</span><br>
             </div>
 
             <div id="buttons">
@@ -27,6 +73,9 @@
             </div>
 
         </form>
+
+        <!-- Result section -->
+        <div id="result"></div>
     </main>
 </body>
 </html>
