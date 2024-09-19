@@ -54,7 +54,7 @@
 <body>
     <main>
         <h1>Product Discount Calculator</h1>
-        <form name="discountForm" onsubmit="return validateForm();">
+        <!-- <form name="discountForm" onsubmit="return validateForm();">
 
             <div id="data">
                 <label>Product Description:</label>
@@ -72,10 +72,35 @@
                 <input type="submit" value="Calculate Discount"><br>
             </div>
 
-        </form>
+        </form> -->
 
         <!-- Result section -->
+        <table>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category ID</th>
+                <th>List Price</th>
+                <th>Discount Percent</th>
+                <th>Actions</th>
+            </tr>
+            <?php foreach ($products as $product) : ?>
+            <tr>
+                <td><?php echo $product['product_id']; ?></td>
+                <td><?php echo $product['product_name']; ?></td>
+                <td><?php echo $product['category_id']; ?></td>
+                <td><?php echo $product['list_price']; ?></td>
+                <td><?php echo $product['discount_percent']; ?></td>
+                <td>
+                    <!-- Edit button with link to edit_product.php -->
+                    <a href="edit_product.php?product_id=<?php echo $product['product_id']; ?>">Edit</a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
         <div id="result"></div>
+        
     </main>
 </body>
+
 </html>
